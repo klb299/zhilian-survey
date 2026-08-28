@@ -85,3 +85,36 @@ node scripts/generate-demo-data.js --clear      # 仅清除演示数据，保留
 5. 默认管理员密码：`admin123456`
 
 生产环境建议修改环境变量 `ADMIN_PASSWORD`，并部署到带 HTTPS 的服务器。
+
+## 线上部署
+
+代码已托管在 GitHub：https://github.com/klb299/zhilian-survey
+
+### 方式一：Railway（推荐，支持 Node 运行时 + 持久磁盘）
+
+1. 打开 https://railway.app ，用 GitHub 账号登录
+2. New Project → Deploy from GitHub repo → 选择 `klb299/zhilian-survey`
+3. 部署完成后，在服务 **Variables** 中设置：
+   - `ADMIN_PASSWORD` = 你的后台密码（务必改掉默认的 `admin123456`）
+   - `PORT` 保持 `3000` 即可
+4. **挂载持久卷**（不挂的话服务重启后问卷数据会丢失）：
+   服务 → Settings → Volumes → Add Volume，挂载路径填 `/app/data`
+5. Settings → Networking → Generate Domain，即可拿到公网地址
+
+### 方式二：任意 Docker 主机
+
+```bash
+docker build -t zhilian-survey .
+docker run -d -p 3000:3000 \
+  -e ADMIN_PASSWORD=你的密码 \
+  -v zhilian-data:/app/data \
+  zhilian-survey
+```
+
+### 数据安全说明
+
+- `data/demo-seed.json` 是随仓库提交的演示数据种子（686 条）
+- 服务首次启动且 `data/submissions.json` 不存在时，会自动从种子载入，
+  保证线上后台一打开就能看到既有调研成果
+- 演示条目均带 `demo: true`，后台「清除演示数据」可一键清空，不会误删真实提交
+- `data/submissions.json`（真实问卷）已被 .gitignore 排除，不会进仓库
