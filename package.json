@@ -1,0 +1,8 @@
+{
+  "name": "zhilian-zhujing-survey",
+  "version": "1.0.0",
+  "description": "智联筑境前期调研问卷与管理员数据后台",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": { "express": "^4.21.2" }
+}

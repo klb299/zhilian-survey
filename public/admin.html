@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>智联筑境｜管理员后台</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header class="hero"><div class="wrap"><div class="brand">智联筑境 · ADMIN</div><h1>前期调研数据管理中心</h1><p>实时查看问卷回收情况、需求分布与调研成果。</p></div></header>
+<main class="wrap">
+<section class="card login" id="loginBox"><h2 class="section-title">管理员登录</h2><p class="hint">默认密码：admin123456（部署后建议通过环境变量修改）</p><input id="pwd" type="password" placeholder="请输入管理员密码"><br><br><button class="btn btn-primary" onclick="login()">进入后台</button></section>
+<div id="dashboard" style="display:none">
+<section class="card admin-head"><div><h2 class="section-title">数据概览</h2><p class="hint">实时问卷与项目既有调研成果分开展示。</p></div><div><button class="btn btn-secondary" onclick="load()">刷新</button> <button class="btn btn-primary" onclick="exportCSV()">导出 CSV</button> <button class="btn btn-danger" id="clearDemoBtn" onclick="clearDemo()" style="display:none">清除演示数据</button></div></section>
+<section class="grid">
+<div class="stat">实时回收问卷<span class="badge badge-live">实时</span><b id="count">0</b><span class="stat-sub" id="demoNote"></span></div>
+<div class="stat">既有有效问卷<span class="badge">历史</span><b>686</b></div>
+<div class="stat">走访院校<span class="badge">历史</span><b>8</b></div>
+<div class="stat">走访企业<span class="badge">历史</span><b>12</b></div>
+</section>
+<p class="hint">标注「历史」的 3 项为 2026 年 3—5 月线下走访调研的固定成果，不随线上回收量变化；「实时」为本平台线上回收数量。</p>
+<section class="card"><h2 class="section-title">项目既有调研成果</h2><p>2026 年 3—5 月，项目团队走访吉林省 8 所中高职院校、12 家物联网与电子制造企业，面向 54 名专业教师、742 名学生和 18 名企业技术人员开展问卷与访谈，回收有效问卷 686 份。</p>
+<div class="charts">
+<div class="chart"><h3>核心需求与问题</h3><div class="bar"><div class="bar-top"><span>教师认为设备台套数不足影响教学进度</span><b>91.4%</b></div><div class="bar-bg"><div class="bar-fill" style="width:91.4%"></div></div></div><div class="bar"><div class="bar-top"><span>学生希望增加可反复试错线上仿真</span><b>88.2%</b></div><div class="bar-bg"><div class="bar-fill" style="width:88.2%"></div></div></div><div class="bar"><div class="bar-top"><span>院校负责人认为采购维护制约更新</span><b>83.6%</b></div><div class="bar-bg"><div class="bar-fill" style="width:83.6%"></div></div></div><div class="bar"><div class="bar-top"><span>企业认为毕业生需要二次培训</span><b>76.5%</b></div><div class="bar-bg"><div class="bar-fill" style="width:76.5%"></div></div></div></div>
+<div class="chart"><h3>样本构成</h3><div class="bar"><div class="bar-top"><span>专业教师</span><b>54</b></div><div class="bar-bg"><div class="bar-fill" style="width:6.6%"></div></div></div><div class="bar"><div class="bar-top"><span>学生</span><b>742</b></div><div class="bar-bg"><div class="bar-fill" style="width:90.3%"></div></div></div><div class="bar"><div class="bar-top"><span>企业技术人员</span><b>18</b></div><div class="bar-bg"><div class="bar-fill" style="width:2.2%"></div></div></div><p class="hint">注：样本构成按三类受访人数展示；有效问卷为 686 份。</p></div>
+</div></section>
+<p class="hint">以下为本平台线上回收问卷的实时分布统计。</p>
+<section class="charts">
+<div class="card"><h2 class="section-title">单位/专业类型</h2><div id="unitType"></div></div>
+<div class="card"><h2 class="section-title">实训课程</h2><div id="courses"></div></div>
+<div class="card"><h2 class="section-title">设备满足度</h2><div id="equipment"></div></div>
+<div class="card"><h2 class="section-title">实训最突出问题</h2><div id="problems"></div></div>
+<div class="card"><h2 class="section-title">平台需求</h2><div id="needPlatform"></div></div>
+<div class="card"><h2 class="section-title">最受关注的平台功能</h2><div id="platformFeatures"></div></div>
+<div class="card"><h2 class="section-title">年度授权费用</h2><div id="fee"></div></div>
+<div class="card"><h2 class="section-title">试点合作意愿</h2><div id="pilot"></div></div>
+</div>
+<section class="card"><h2 class="section-title">最新提交</h2><div class="table-wrap"><table><thead><tr><th>时间</th><th>类型</th><th>课程</th><th>设备满足度</th><th>突出问题</th><th>平台需求</th><th>费用</th><th>试点</th><th>优先课程/岗位</th><th>建议</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+<section class="card"><h2 class="section-title">文字详情与检索</h2>
+<p class="hint">检索全部提交的文字内容（单位、课程、问题、建议等），并对「优先课程/岗位」「建议」做领域关键词词频统计。</p>
+<div class="search-bar"><input id="q" placeholder="输入关键词，如：PLC、设备、虚拟仿真……"><button class="btn btn-primary" onclick="searchText()">搜索</button><button class="btn btn-secondary" onclick="clearSearch()">清除</button><span class="hint" id="searchInfo"></span></div>
+<div class="tagcloud" id="keywords"></div>
+<div class="table-wrap"><table><thead><tr><th>时间</th><th>类型</th><th>优先课程/岗位</th><th>建议</th></tr></thead><tbody id="textRows"></tbody></table></div>
+<div class="pager"><button class="btn btn-secondary" id="prevPage" onclick="changePage(-1)">上一页</button><span id="pageInfo"></span><button class="btn btn-secondary" id="nextPage" onclick="changePage(1)">下一页</button></div>
+</section>
+</div></main><footer>管理员后台 · 数据保存在服务器 data/submissions.json</footer>
+<script>
+let token="";
+const CHART_KEYS=["unitType","courses","problems","equipment","needPlatform","platformFeatures","fee","pilot"];
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function login(){token=document.getElementById("pwd").value;const r=await fetch("/api/admin/stats",{headers:{"x-admin-password":token}});if(!r.ok){alert(r.status===401?"密码错误":"登录失败，请重试");return}document.getElementById("loginBox").style.display="none";document.getElementById("dashboard").style.display="block";load()}
+async function load(){const r=await fetch("/api/admin/stats",{headers:{"x-admin-password":token}});if(!r.ok){alert("登录已失效");return}const d=await r.json();document.getElementById("count").textContent=d.count;showDemo(d.demoCount||0);CHART_KEYS.forEach(k=>renderBars(k,d[k]||{}));document.getElementById("rows").innerHTML=renderRows(d.submissions||[]);await loadText()}
+// 演示数据会与真实问卷混在一起展示，必须让用户一眼看出并随时可清除
+function showDemo(n){const note=document.getElementById("demoNote"),btn=document.getElementById("clearDemoBtn");if(n){note.textContent="含演示数据 "+n+" 条";note.className="stat-sub warn";btn.style.display=""}else{note.textContent="";note.className="stat-sub";btn.style.display="none"}}
+async function clearDemo(){if(!confirm("确定清除全部演示数据吗？\n\n真实提交的问卷会完整保留，此操作不可撤销。"))return;const r=await fetch("/api/admin/demo",{method:"DELETE",headers:{"x-admin-password":token}});if(!r.ok){alert("清除失败，请重试");return}const d=await r.json();alert("已清除 "+d.removed+" 条演示数据，剩余 "+d.remaining+" 条真实提交。");load()}
+function renderRows(list){if(!list.length)return '<tr><td colspan="10">暂无实时提交数据</td></tr>';return list.map(x=>`<tr><td>${esc(new Date(x.submittedAt).toLocaleString())}</td><td>${esc(x.unitType)}</td><td>${esc((x.courses||[]).join("、"))}</td><td>${esc(x.equipment)}</td><td>${esc((x.problems||[]).join("、"))}</td><td>${esc(x.needPlatform)}</td><td>${esc(x.fee)}</td><td>${esc(x.pilot)}</td><td>${esc(x.priority)}</td><td>${esc(x.suggestions)}</td></tr>`).join("")}
+function renderBars(id,obj){const el=document.getElementById(id);if(!el)return;const total=Object.values(obj).reduce((a,b)=>a+b,0)||1;el.innerHTML=Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,v])=>{const pct=v/total*100;return `<div class="bar"><div class="bar-top"><span>${esc(k)}</span><b>${v}（${pct.toFixed(1)}%）</b></div><div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div></div>`}).join("")||'<p class="hint">暂无数据</p>'}
+function exportCSV(){const a=document.createElement("a");a.href="/api/admin/export";fetch(a.href,{headers:{"x-admin-password":token}}).then(r=>r.blob()).then(b=>{a.href=URL.createObjectURL(b);a.download="survey-data.csv";a.click()})}
+// 文字详情与检索
+let textPage=1, textQ="", textSize=20, textTotal=0;
+async function loadText(){
+  const r=await fetch(`/api/admin/submissions?q=${encodeURIComponent(textQ)}&page=${textPage}&size=${textSize}`,{headers:{"x-admin-password":token}});
+  if(!r.ok){alert("登录已失效");return}
+  const d=await r.json();
+  textTotal=d.total;
+  document.getElementById("keywords").innerHTML=renderKeywords(d.keywords||[]);
+  document.getElementById("textRows").innerHTML=d.items.length?d.items.map(x=>`<tr><td>${esc(new Date(x.submittedAt).toLocaleString())}</td><td>${esc(x.unitType)}</td><td>${esc(x.priority)}</td><td>${esc(x.suggestions)}</td></tr>`).join(""):'<tr><td colspan="4">暂无匹配记录</td></tr>';
+  document.getElementById("searchInfo").textContent=textQ?`命中 ${textTotal} 条`:`共 ${textTotal} 条`;
+  const pages=Math.max(1,Math.ceil(textTotal/textSize));
+  document.getElementById("pageInfo").textContent=`第 ${textPage} / ${pages} 页`;
+  document.getElementById("prevPage").disabled=textPage<=1;
+  document.getElementById("nextPage").disabled=textPage*textSize>=textTotal;
+}
+function renderKeywords(list){
+  if(!list.length)return '<span class="hint">暂无关键词统计</span>';
+  const max=list[0][1]||1;
+  return list.map(([k,v])=>`<span class="kw" style="font-size:${12+Math.round(v/max*10)}px">${esc(k)} <b>${v}</b></span>`).join("");
+}
+function searchText(){textQ=document.getElementById("q").value.trim();textPage=1;loadText()}
+function clearSearch(){textQ="";document.getElementById("q").value="";textPage=1;loadText()}
+function changePage(d){textPage=Math.max(1,textPage+d);loadText()}
+</script></body></html>

@@ -1,0 +1,21 @@
+# 依赖
+node_modules/
+
+# 运行期真实问卷数据（不入库，避免真实提交与演示数据混淆）
+data/submissions.json
+
+# 本地 / 运行期日志
+*.log
+
+# 环境变量（含管理员密码等敏感配置）
+.env
+.env.local
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 代理工作区状态（仅本机会话使用，不入库；注意：请勿删除该目录本身）
+.workbuddy/
