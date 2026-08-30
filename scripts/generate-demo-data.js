@@ -45,9 +45,9 @@ const DATA_FILE = path.join(__dirname, "..", "data", "submissions.json");
 const SEED_DEFAULT = 20260828;
 const TOTAL_DEFAULT = 686;
 
-// 时间范围：2026-06-01 ~ 2026-08-28，权重向近期倾斜，模拟线上问卷逐步铺开的过程
-const TIME_START = new Date("2026-06-01T08:00:00+08:00").getTime();
-const TIME_END = new Date("2026-08-27T21:00:00+08:00").getTime();
+// 时间范围：2026-03-01 ~ 2026-07-31，权重向近期倾斜，模拟线上问卷逐步铺开的过程
+const TIME_START = new Date("2026-03-01T08:00:00+08:00").getTime();
+const TIME_END = new Date("2026-07-31T21:00:00+08:00").getTime();
 
 // ---------------------------------------------------------------- 参数解析
 const argv = process.argv.slice(2);
